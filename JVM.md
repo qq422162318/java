@@ -1,10 +1,6 @@
-[![CodeZX](http://47.98.150.21/upload/2020/3/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20200315164857-6f4e0b3fd29f4b8297f7d61e1b395972.jpg) CodeZX](http://47.98.150.21/)
-
-
-
 # JVM学习笔记
 
-张祥 2020年03月16日 2,730次浏览
+张祥 2020年03月16日 2,920次浏览
 
 ## 1_介绍
 
@@ -142,13 +138,13 @@ class Emp{
         this.dept = dept;
     }
 
-} 
+}
 ```
 
 ![image.png](http://47.98.150.21/upload/2020/3/image-be1e85a97ee54898807c3ea1d3a2936a.png)
 
 ```
-Infinite recursion (StackOverflowError) (through reference chain: com.example.jvm.Emp["dept"]->com.example.jvm.Dept["emp"]->java.util.ArrayList[0]->com.example.jvm.Emp["dept"]->com.example.jvm.Dept["emp"]->java.util.ArrayList[0]->com.example.jvm.Emp["dept"]->com.example.jvm.Dept["emp"]->java.util.ArrayList[0]->com.example.jvm.Emp["dept"]->com.example.jvm.Dept["emp"]->java.util.ArrayList[0]->com.example.jvm.Emp["dept"]->com.example.jvm.Dept["emp"]->java.util.ArrayList[0]->com.example.jvm.Emp["dept"]->com.example.jvm.Dept["emp"]->java.util.ArrayList[0]->com.example.jvm.Emp["dept"]->com.example.jvm.Dept["emp"]->java.util.ArrayList[0]->com.example.jvm.Emp["dept"]->com.example.jvm.Dept["emp"]->java.util.ArrayList[0]->com.example.jvm.Emp["dept"]->com.example.jvm.Dept["emp"]->java.util.ArrayList[0]->com.example.jvm.Emp["dept"]-...... 
+Infinite recursion (StackOverflowError) (through reference chain: com.example.jvm.Emp["dept"]->com.example.jvm.Dept["emp"]->java.util.ArrayList[0]->com.example.jvm.Emp["dept"]->com.example.jvm.Dept["emp"]->java.util.ArrayList[0]->com.example.jvm.Emp["dept"]->com.example.jvm.Dept["emp"]->java.util.ArrayList[0]->com.example.jvm.Emp["dept"]->com.example.jvm.Dept["emp"]->java.util.ArrayList[0]->com.example.jvm.Emp["dept"]->com.example.jvm.Dept["emp"]->java.util.ArrayList[0]->com.example.jvm.Emp["dept"]->com.example.jvm.Dept["emp"]->java.util.ArrayList[0]->com.example.jvm.Emp["dept"]->com.example.jvm.Dept["emp"]->java.util.ArrayList[0]->com.example.jvm.Emp["dept"]->com.example.jvm.Dept["emp"]->java.util.ArrayList[0]->com.example.jvm.Emp["dept"]->com.example.jvm.Dept["emp"]->java.util.ArrayList[0]->com.example.jvm.Emp["dept"]-......
 ```
 
 **交叉引用，导致数据过多，栈帧过大**
@@ -156,11 +152,11 @@ Infinite recursion (StackOverflowError) (through reference chain: com.example.jv
 **使用ObjectMapper：**
 
 ```
- <dependency>
+	<dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>2.8.3</version>
-        </dependency> 
+        </dependency>
 ```
 
 添加@JsonIgnore，则忽略这个对象的Json转译。
@@ -169,7 +165,7 @@ Infinite recursion (StackOverflowError) (through reference chain: com.example.jv
 private String name;
     @JsonIgnore
     private Dept dept;	
-输出结果：{"name":"jndx","emp":[{"name":"zx"},{"name":"hkw"}]} 
+输出结果：{"name":"jndx","emp":[{"name":"zx"},{"name":"hkw"}]}
 ```
 
 **线程诊断**
@@ -232,7 +228,7 @@ public class Demo1 {
         System.out.println("3...");
         Thread.sleep(1000000L);
     }
-} 
+}
 ```
 
 **运行上面代码，首先得到Demo进程PID，后每次输出后，jmap -heap PID得到如下内容**
@@ -387,12 +383,12 @@ PS Old Generation
    free     = 178200488 (169.94522857666016MB)
    0.6168253937659905% used
 
-3162 interned Strings occupying 259464 bytes. 
+3162 interned Strings occupying 259464 bytes.
 ```
 
 **jconsole使用** 控制台输入jconsole
 
-![image.png](http://47.98.150.21/upload/2020/3/image-50bd0d32512e4654a6e0e307178e54fd.png)可明显看出内存变化。
+![image.png](http://47.98.150.21/upload/2020/3/image-50bd0d32512e4654a6e0e307178e54fd.png) 可明显看出内存变化。
 
 **一个简单的案例**
 
@@ -418,7 +414,7 @@ public class Demo2 {
 
 class student{
     private byte[] big = new byte[1024 * 1024];
-} 
+}
 ```
 
 ### 05_方法区（线程共享）
@@ -549,7 +545,7 @@ ang/String ]
           locals = [ class "[Ljava/lang/String;", class java/lang/String, class java/lang/String, class java/lang/String, class java/l
 ang/String ]
           stack = [ class java/io/PrintStream, int ]
-} 
+}
 ```
 
 **组成与实现：** jdk6（永久代实现）和jdk8（元空间实现）中方法区的区别，其中最主要的区别是8中将方法区转移到本地内存中，且常量池分为运行时常量池和字符串常量池；且字符串常量池被留在内存中的堆中。
@@ -601,7 +597,7 @@ public class HelloWorld {
 		System.out.println(str2 == str4);//false 
 		System.out.println(str4 == str5);//true
     }
-} 
+}
 ```
 
 - String str1 = "abc";
@@ -643,18 +639,18 @@ String s1 = "a";
             在串池中寻找到“ab”，返回“ab”引用值
          */
         String s5 = "a"+"b";
-        System.out.println(s3==s5);//true 
+        System.out.println(s3==s5);//true
 ```
 
 1. 字符串延迟加载
 
 ```
- String s1 = "a";
+	String s1 = "a";
 	//java.lang.string.count = 2361
         String s2 = "b";
 	//java.lang.string.count = 2362
         String s3 = "ab";
-	//java.lang.string.count = 2363 
+	//java.lang.string.count = 2363	
 ```
 
 1. 常量池和串池的关系
@@ -697,7 +693,7 @@ public class internDemo {
         System.out.println(s3==s);//false
 
     }
-} 
+}
 ```
 
 1. intern方法的运用jdk1.6
@@ -718,7 +714,7 @@ public class internDemo {
         System.out.println(s3==s);//true
 
     }
-} 
+}
 ```
 
 1. StringTable位置
@@ -781,7 +777,7 @@ Variance of bucket size :     0.107
 Std. dev. of bucket size:     0.326
 Maximum bucket size     :         3
 
-Process finished with exit code 0 
+Process finished with exit code 0
 ```
 
 1. StringTable调优
@@ -842,7 +838,7 @@ Exception in thread "main" java.lang.OutOfMemoryError: Direct buffer memory
 	at java.nio.Bits.reserveMemory(Bits.java:694)
 	at java.nio.DirectByteBuffer.<init>(DirectByteBuffer.java:123)
 	at java.nio.ByteBuffer.allocateDirect(ByteBuffer.java:311)
-	at com.example.jvm.Demo3.main(Demo3.java:14) 
+	at com.example.jvm.Demo3.main(Demo3.java:14)
 ```
 
 **分配和回收原理**
@@ -894,7 +890,7 @@ public class rootSearch {
         System.out.println("end结束。。。。");
 
     }
-} 
+}
 ```
 
 ![image.png](http://47.98.150.21/upload/2020/3/image-15200c26f9cf443091a0fba3c3783ff8.png)
@@ -946,7 +942,7 @@ Exception in thread "main" java.lang.OutOfMemoryError: Java heap space
 	at com.example.jvm.GC.softY.main(softY.java:12)
 
 ++++++++++++++++解释+++++++++++++++++++
--Xmx20m将堆内存最大设置为20m，强引用byte数组无法被回收，25m>20m，所以堆内存溢出。 
+-Xmx20m将堆内存最大设置为20m，强引用byte数组无法被回收，25m>20m，所以堆内存溢出。
 ```
 
 1. 软引用
@@ -1010,7 +1006,7 @@ Heap
  ParOldGen       total 8704K, used 637K [0x00000000fec00000, 0x00000000ff480000, 0x00000000ff980000)
   object space 8704K, 7% used [0x00000000fec00000,0x00000000fec9f660,0x00000000ff480000)
  Metaspace       used 3130K, capacity 4500K, committed 4864K, reserved 1056768K
-  class space    used 341K, capacity 388K, committed 512K, reserved 1048576K 
+  class space    used 341K, capacity 388K, committed 512K, reserved 1048576K
 ```
 
 **软引用配合引用队列**
@@ -1050,13 +1046,13 @@ Heap
 5
 循环结束,1
 [B@7a81197d
-++++++软引用被清除 NULL消失++++++ 
+++++++软引用被清除 NULL消失++++++
 ```
 
 1. 弱引用
 
 ```
- public static  void weak(){
+  public static  void weak(){
         List<WeakReference<byte[]>> list = new ArrayList<>();
         for (int i = 0;i < 10;i++){
             WeakReference<byte[]> ref = new WeakReference<>(new byte[_4MB]);
@@ -1091,10 +1087,12 @@ null null null null null null null null null [B@2f92e0f4
 弱引用对象在首次触发minor GC时，将弱引用对象转移到老年代中，再次触发 minor GC时，回收在Eden中的新生对象。
 因为软引用占用内存，在没有及时回收引用时，老年代内存逐渐被软引用占用，直到内存不足，触发FULL GC ，回收所有的弱引用对象。
 +++++++++++++++问题++++++++++++++++++
-这样弱引用未被回收，还是会一直占用内存，所以还是需要配合引用队列回收弱引用，具体操作参考软引用。 
+这样弱引用未被回收，还是会一直占用内存，所以还是需要配合引用队列回收弱引用，具体操作参考软引用。
 ```
 
-\### 02_回收算法 1. 标记清除 - 速度较快 - 会造成内存碎片化 ![image.png](http://47.98.150.21/upload/2020/3/image-467ea48c827947d99130701448d2af0d.png)
+# 恰饭时间到，5毛钱；）
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200610234339529.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQzMDE4MjEz,size_16,color_FFFFFF,t_70#pic_center### 02_回收算法 1. 标记清除 - 速度较快 - 会造成内存碎片化 ![image.png](http://47.98.150.21/upload/2020/3/image-467ea48c827947d99130701448d2af0d.png)
 
 1. 标记整理
    - 速度慢
@@ -1271,7 +1269,7 @@ null null null null null null null null null [B@2f92e0f4
 
 ```
 String s1 = new String("hello");//char[]{'h','e','l','l','o'}
-String s1 = new String("hello");//char[]{'h','e','l','l','o'} 
+String s1 = new String("hello");//char[]{'h','e','l','l','o'}
 ```
 
 - 将所有新分配的字符串放入一个队列
@@ -1305,18 +1303,3 @@ String s1 = new String("hello");//char[]{'h','e','l','l','o'}
 
 官方调优文档地址：https://docs.oracle.com/en/java/javase/14/gctuning/introduction-garbage-collection-tuning.html#GUID-326EB4CF-8C8C-4267-8355-21AB04F0D304
 
-接下来的内容请见[http://www.codeww.cn/archives/jvm%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E4%BA%8C](http://www.codeww.cn/archives/jvm学习笔记之二)
-
-[ JVM学习笔记之二](http://ftp6269263.host103.abeiyun.cn/archives/jvm学习笔记之二)[二分查找（多个返回多下标） ](http://ftp6269263.host103.abeiyun.cn/archives/二分查找多个返回多下标)
-
-相关标签
-
-[JAVA](http://ftp6269263.host103.abeiyun.cn/tags/java)
-
-[基础知识](http://ftp6269263.host103.abeiyun.cn/tags/基础知识)
-
-相关推荐
-
-[JVM内存模型](http://ftp6269263.host103.abeiyun.cn/archives/jvm内存模型)[JVM学习笔记](http://ftp6269263.host103.abeiyun.cn/archives/jvm学习笔记)[JVM学习笔记之二](http://ftp6269263.host103.abeiyun.cn/archives/jvm学习笔记之二)
-
-CodeZX @2020 **Thank for [Halo](https://github.com/halo-dev/halo)**
