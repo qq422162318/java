@@ -636,7 +636,8 @@ alter table 表名 change column 旧列名 新列名 类型;
 alter table 表名 drop column 列名;
 5.修改表名
 alter table 表名 rename 【to】 新表名;
-
+6.修改表的字符集
+alter table user default character SET utf8;
 三、删除表
 drop table【if exists】 表名;
 
